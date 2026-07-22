@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: roastline_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: roastline
+      MYSQL_USER: roastline
+      MYSQL_PASSWORD: roastline123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: roastline_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: roastline
+      PMA_PASSWORD: roastline123
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+
+volumes:
+  mysqldata:
