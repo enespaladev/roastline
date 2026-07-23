@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import 'flag-icons/css/flag-icons.min.css';
 
 /* @custom-variant dark (&:is(.dark *));
 
@@ -1887,4 +1888,25 @@
       --tw-exit-translate-y: 0;
     }
   }
+}
+
+@keyframes slide-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up { animation: slide-up 0.7s ease-out both; }
+
+:root {
+    --accent: oklch(0.74 0.13 72);
+    --accent-foreground: oklch(0.26 0.04 60);
+    --primary: oklch(0.38 0.06 158);
+    --primary-foreground: oklch(0.98 0.006 95);
+}
+
+.flag-icon-circle {
+    font-size: 24px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    display: inline-block;
 }
