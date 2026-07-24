@@ -63,8 +63,8 @@
         <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
             :style="{ opacity: i === current ? 1 : 0 }" :aria-hidden="i !== current">
             <img :src="slide.image" :alt="slide.alt" class="size-full scale-100 object-cover" />
-            <div class="absolute inset-0  from-primary/95 via-primary/80 to-primary/40"></div>
-            {{-- <div class="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/80 to-primary/40"></div> --}}
+            <div class="absolute inset-0 from-primary/95 via-primary/80 to-primary/40"></div>
+            {{-- <div class="absolute inset-0 bg-gradient-tfrom-primary/95 via-primary/80 to-primary/40"></div> --}}
         </div>
     </template>
 
@@ -120,14 +120,14 @@
 
     {{-- Arrows --}}
     <button type="button" @click="prev()" aria-label="Önceki görsel"
-        class="absolute left-3 top-1/2 z-10  -translate-y-1/2 rounded-full border border-primary-foreground bg-primary-foreground/10 p-3 text-primary backdrop-blur-sm transition-colors hover:bg-primary md:block">
+        class="absolute left-3 top-1/2 z-10  -translate-y-1/2 rounded-full border border-primary-foreground bg-primary-foreground/20 p-3 text-primary backdrop-blur-sm transition-colors hover:bg-primary md:block">
         <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="m15 18-6-6 6-6" />
         </svg>
     </button>
     <button type="button" @click="next()" aria-label="Sonraki görsel"
-        class="absolute right-3 top-1/2 z-10  -translate-y-1/2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 p-3 text-primary-foreground backdrop-blur-sm transition-colors hover:bg-primary-foreground/20 md:block">
+        class="absolute right-3 top-1/2 z-10  -translate-y-1/2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 p-3 text-primary-foreground backdrop-blur-sm transition-colors hover:bg-primary md:block">
         <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="m9 18 6-6-6-6" />
