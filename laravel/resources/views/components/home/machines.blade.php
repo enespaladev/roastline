@@ -2,19 +2,19 @@
 @php
     $machines = [
         [
-            'image' => asset('images/machine-hazelnut.png'),
+            'image' => asset('frontend/machines/1-BANTLI FIRINLAR/rl-500.webp'),
             'tag' => 'Kuruyemiş',
             'title' => 'Fındık & Kuruyemiş Kavurma Makinesi',
             'desc' => '50-60 kg kapasiteli, döner tamburlu, homojen kavurma sağlayan endüstriyel çözüm.',
         ],
         [
-            'image' => asset('images/machine-coffee.png'),
+            'image' => asset('frontend/machines/3-KAHVE MAKİNELERİ/coffee-home-image.webp'),
             'tag' => 'Kahve',
             'title' => 'Kahve Kavurma Makinesi',
             'desc' => 'Cam gözetleme penceresi ve hassas kontrol paneli ile profesyonel kahve kavurma.',
         ],
         [
-            'image' => asset('images/hero-roasting-machine.png'),
+            'image' => asset('frontend/machines/2-DÖNERLİ FIRINLAR/rl-15dk.webp'),
             'tag' => 'Mağaza Tipi',
             'title' => 'Otomatik Kavurma Fırını',
             'desc' => 'Mağaza ve dükkanlar için kompakt, otomatik kuruyemiş kavurma fırını.',
@@ -84,7 +84,7 @@
                             class="group h-full overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:shadow-xl">
                             <div class="relative aspect-4/3 overflow-hidden">
                                 <img src="{{ $m['image'] }}" alt="{{ $m['title'] }}"
-                                    class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    class="size-full object-contain transition-transform duration-500 group-hover:scale-105"
                                     loading="lazy">
                                 <span
                                     class="absolute left-4 top-4 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">
