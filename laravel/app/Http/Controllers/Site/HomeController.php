@@ -16,4 +16,14 @@ class HomeController extends Controller
         $posts = Post::where('is_active', true)->orderByDesc('published_at')->take(3)->get();
         return view('site.home', compact('categories', 'posts', 'locale'));
     }
+
+    public function about(string $locale){
+        app()->setLocale($locale);
+        return view('site.about', compact('locale'));
+    }
+
+    public function videos(string $locale){
+        app()->setLocale($locale);
+        return view('site.videos', compact('locale'));
+    }
 }

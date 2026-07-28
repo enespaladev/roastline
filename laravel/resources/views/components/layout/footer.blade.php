@@ -91,10 +91,10 @@
         <div>
             <h3 class="font-serif text-lg font-semibold">{{ __('footer.links') }}</h3>
             <ul class="mt-4 space-y-3">
-                <li><a href="{{ route('products.index', ['locale' => app()->getLocale()]) }}"
+                <li><a href="{{ localizedRoute('products.index') }}"
                         class="text-sm text-white/75 transition-colors hover:text-orange-400">{{ __('menu.products') }}</a>
                 </li>
-                <li><a href="{{ route('posts.index', ['locale' => app()->getLocale()]) }}"
+                <li><a href="{{ localizedRoute('posts.index') }}"
                         class="text-sm text-white/75 transition-colors hover:text-orange-400">{{ __('footer.blog_news') }}</a>
                 </li>
                 <li><a href="#"

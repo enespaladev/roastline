@@ -14,19 +14,30 @@ use App\Http\Controllers\Site\PostController as SitePostController;
 use App\Http\Controllers\Site\ContactController;
 
 // ── Site Routes ──────────────────────────────────────────────
-Route::prefix('{locale}')
-    ->where(['locale' => 'tr|en|ar'])
-    ->middleware('set.locale')
-    ->group(function () {
-        Route::get('/', [HomeController::class, 'index'])->name('home');
-        Route::get('/hakkimizda', [HomeController::class, 'about'])->name('about');
-        Route::get('/urunler', [SiteProductController::class, 'index'])->name('products.index');
-        Route::get('/urunler/{slug}', [SiteProductController::class, 'show'])->name('products.show');
-        Route::get('/blog', [SitePostController::class, 'index'])->name('posts.index');
-        Route::get('/blog/{slug}', [SitePostController::class, 'show'])->name('posts.show');
-        Route::get('/iletisim', [ContactController::class, 'index'])->name('contact.index');
-        Route::post('/iletisim', [ContactController::class, 'store'])->name('contact.store');
-    });
+$slugs = config('route-translations');
+
+foreach (['tr', 'en', 'ar'] as $locale) {
+    Route::prefix($locale)
+        ->name("{$locale}.")
+        ->group(function () use ($locale, $slugs) {
+            Route::get('/', [HomeController::class, 'index'])->name('home')->defaults('locale', $locale);
+            Route::get('/' . $slugs['about'][$locale], [HomeController::class, 'about'])->name('about')->defaults('locale', $locale);
+            Route::get('/' . $slugs['videos'][$locale], [HomeController::class, 'videos'])->name('videos')->defaults('locale', $locale);
+
+            Route::get('/' . $slugs['products'][$locale], [SiteProductController::class, 'index'])->name('products.index')->defaults('locale', $locale);
+            Route::get('/' . $slugs['products'][$locale] . '/{slug}', [SiteProductController::class, 'show'])->name('products.show')->defaults('locale', $locale);
+
+            Route::get('/' . $slugs['posts'][$locale], [SitePostController::class, 'index'])->name('posts.index')->defaults('locale', $locale);
+            Route::get('/' . $slugs['posts'][$locale] . '/{slug}', [SitePostController::class, 'show'])->name('posts.show')->defaults('locale', $locale);
+
+            Route::get('/' . $slugs['contact'][$locale], [ContactController::class, 'index'])->name('contact.index')->defaults('locale', $locale);
+        });
+}
+
+// POST — tek route yeterli, dile göre tekrar etmesine gerek yok
+Route::post('/{locale}/' . 'iletisim-gonder', [ContactController::class, 'store'])
+    ->where('locale', 'tr|en|ar')
+    ->name('contact.store');
 
 Route::redirect('/', '/tr');
 

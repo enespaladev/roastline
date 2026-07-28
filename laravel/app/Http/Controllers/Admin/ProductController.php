@@ -38,9 +38,19 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $locale, string $slug)
     {
-        //
+        app()->setLocale($locale);
+        $product = Product::where('slug', $slug)->where('is_active', true)->firstOrFail();
+
+        $alternateUrls = collect(['tr', 'en', 'ar'])->mapWithKeys(function ($l) use ($product) {
+            $prefix = \App\Services\RouteTranslator::slug('products', $l);
+            return [$l => url($l . '/' . $prefix . '/' . $product->getTranslation('slug', $l))];
+        })->toArray();
+
+        view()->share('alternateUrls', $alternateUrls);
+
+        return view('site.products.show', compact('product', 'locale'));
     }
 
     /**

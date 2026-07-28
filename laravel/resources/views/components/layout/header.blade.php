@@ -1,12 +1,14 @@
+{{ dd($alternateUrls ?? 'YOK') }}
+
 @php
     $navItems = [
-        ['label' => __('menu.home'), 'href' => route('home', ['locale' => app()->getLocale()])],
-        ['label' => __('menu.about'), 'href' => '#hakkimizda'],
-        ['label' => __('menu.products'), 'href' => route('products.index', ['locale' => app()->getLocale()])],
-        ['label' => __('menu.videos'), 'href' => '#videolar'],
-        ['label' => __('menu.docs'), 'href' => '#belgeler'],
-        ['label' => __('menu.blog'), 'href' => route('posts.index', ['locale' => app()->getLocale()])],
-        ['label' => __('menu.contact'), 'href' => route('contact.index', ['locale' => app()->getLocale()])],
+        ['label' => __('menu.home'), 'href' => localizedRoute('home')],
+        ['label' => __('menu.about'), 'href' => localizedRoute('about')],
+        ['label' => __('menu.products'), 'href' => localizedRoute('products.index')],
+        ['label' => __('menu.videos'), 'href' => localizedRoute('videos')],
+        // ['label' => __('menu.docs'), 'href' => localizedRoute('belgeler')],
+        ['label' => __('menu.blog'), 'href' => localizedRoute('posts.index')],
+        ['label' => __('menu.contact'), 'href' => localizedRoute('contact.index')],
     ];
 
     $languages = [
@@ -27,7 +29,7 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 24 }, { pa
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 md:px-6">
 
         {{-- Logo --}}
-        <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="flex items-center gap-2.5">
+        <a href="{{ localizedRoute('home') }}" class="flex items-center gap-2.5">
             <img src="{{ asset('frontend/images/roastline-logo.webp') }}" alt="" width="250" height="250">
         </a>
 
@@ -61,8 +63,8 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 24 }, { pa
             </div> --}}
 
             {{-- Dil Seçici --}}
-            <div class="language-selector relative inline-block text-left mr-1 sm:mr-2"
-                x-data="{ langOpen: false }" @click.outside="langOpen = false">
+            <div class="language-selector relative inline-block text-left mr-1 sm:mr-2" x-data="{ langOpen: false }"
+                @click.outside="langOpen = false">
                 <button type="button" x-on:click="langOpen = !langOpen"
                     class="inline-flex items-center justify-center rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
                     aria-haspopup="true" :aria-expanded="langOpen">
@@ -89,7 +91,7 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 24 }, { pa
                             <a href="{{ url($lang . '/' . ltrim(request()->path(), 'tr/en/ar/')) }}"
                                 class="{{ app()->getLocale() === $lang ? 'bg-gray-100 text-gray-900' : 'text-gray-700' }} block px-4 py-2 text-sm text-left inline-flex items-center hover:bg-gray-100"
                                 role="menuitem">
-                                <span class="fi fis {{ $data['flag'] }} flag-icon-circle mr-2" ></span>
+                                <span class="fi fis {{ $data['flag'] }} flag-icon-circle mr-2"></span>
                                 <span class="truncate">{{ $data['label'] }}</span>
                             </a>
                         @endforeach
@@ -179,8 +181,7 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 24 }, { pa
                 class="mt-2 grid grid-cols-1 gap-1 rounded-md border border-gray-200 bg-white py-1 shadow-sm"
                 style="display: none;">
                 @foreach ($languages as $lang => $data)
-                    <a href="{{ url($lang . '/' . ltrim(request()->path(), 'tr/en/ar/')) }}"
-                        x-on:click="langOpen = false"
+                    <a href="{{ $alternateUrls[$lang] ?? url($lang) }}" x-on:click="langOpen = false"
                         class="{{ app()->getLocale() === $lang ? 'bg-gray-100 text-gray-900' : 'text-gray-700' }} block px-4 py-2 text-sm text-left inline-flex items-center hover:bg-gray-100"
                         role="menuitem">
                         <span class="fi fis {{ $data['flag'] }} flag-icon-circle mr-2"></span>

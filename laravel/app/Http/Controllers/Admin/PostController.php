@@ -20,6 +20,21 @@ class PostController extends Controller
         return view('admin.posts.form');
     }
 
+    public function show(string $locale, string $slug)
+    {
+        app()->setLocale($locale);
+        $post = Post::where('slug', $slug)->where('is_active', true)->firstOrFail();
+
+        $alternateUrls = collect(['tr', 'en', 'ar'])->mapWithKeys(function ($l) use ($post) {
+            $prefix = \App\Services\RouteTranslator::slug('posts', $l);
+            return [$l => url($l . '/' . $prefix . '/' . $post->getTranslation('slug', $l))];
+        })->toArray();
+
+        view()->share('alternateUrls', $alternateUrls);
+
+        return view('site.posts.show', compact('post', 'locale'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
