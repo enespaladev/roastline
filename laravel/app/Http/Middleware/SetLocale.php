@@ -24,9 +24,16 @@ class SetLocale
     protected function shareAlternateUrls(Request $request): void
     {
         $route = $request->route();
-        if (!$route) return;
+        if (!$route || !$route->getName()) {
+            return;
+        }
 
-        $routeName = $route->getName(); // örn: "about", "products.show"
+        $routeName = preg_replace('/^(tr|en|ar)\./', '', $route->getName());
+
+        if (in_array($routeName, ['products.show', 'posts.show'])) {
+            return;
+        }
+
         $params = $route->parameters();
 
         $alternateUrls = [];

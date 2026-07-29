@@ -11,8 +11,12 @@ class ProductController extends Controller
     public function index(string $locale)
     {
         app()->setLocale($locale);
+        $products = Product::where('is_active', true)->get();
         $categories = Category::with('products')->where('is_active', true)->orderBy('order')->get();
-        return view('site.products.index', compact('categories', 'locale'));
+
+        dd($categories);
+
+        return view('site.products.index', compact('categories', 'products', 'locale'));
     }
 
     public function show(string $locale, string $slug)

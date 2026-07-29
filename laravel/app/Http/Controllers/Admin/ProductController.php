@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.form');
+        return view('admin.products.form');
     }
 
     /**
@@ -32,7 +32,22 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name_tr' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'name_ar' => 'required|string|max:255',
+        ]);
+
+        Product::create([
+            'name' => ['tr' => $request->name_tr, 'en' => $request->name_en, 'ar' => $request->name_ar],
+            'description' => ['tr' => $request->description_tr, 'en' => $request->description_en, 'ar' => $request->description_ar],
+            'category_id' => $request -> cat_id,
+            'slug' => Str::slug($request->name_en),
+            'order' => $request->order ?? 0,
+            'is_active' => $request->boolean('is_active', true),
+        ]);
+
+        return redirect()->route('admin.product.index')->with('success', 'Ürün eklendi');
     }
 
     /**

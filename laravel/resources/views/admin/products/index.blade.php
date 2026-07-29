@@ -7,7 +7,7 @@
     <h3 class="text-base font-medium text-gray-900">Tum Ürünler</h3>
     <a href="{{ route('admin.products.create') }}"
        class="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-800 transition">
-        + Yeni Kategori
+        + Yeni Ürün
     </a>
 </div>
 

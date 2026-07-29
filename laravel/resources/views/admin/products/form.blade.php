@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', isset($category) ? 'Kategori Duzenle' : 'Yeni Kategori')
+@section('title', isset($category) ? 'Ürün Duzenle' : 'Yeni Ürün')
 
 @section('content')
 <div class="max-w-2xl">

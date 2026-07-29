@@ -1,4 +1,4 @@
-{{ dd($alternateUrls ?? 'YOK') }}
+{{-- {{ dd($alternateUrls ?? 'YOK') }} --}}
 
 @php
     $navItems = [
@@ -88,7 +88,7 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 24 }, { pa
                     role="menu" aria-orientation="horizontal" style="display: none;">
                     <div class="py-1 grid grid-cols-1 gap-1" role="none">
                         @foreach ($languages as $lang => $data)
-                            <a href="{{ url($lang . '/' . ltrim(request()->path(), 'tr/en/ar/')) }}"
+                            <a href="{{ $alternateUrls[$lang] ?? url($lang) }}"
                                 class="{{ app()->getLocale() === $lang ? 'bg-gray-100 text-gray-900' : 'text-gray-700' }} block px-4 py-2 text-sm text-left inline-flex items-center hover:bg-gray-100"
                                 role="menuitem">
                                 <span class="fi fis {{ $data['flag'] }} flag-icon-circle mr-2"></span>
@@ -140,7 +140,7 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 24 }, { pa
             {{-- Mobile Dil Seçici --}}
             <div class="flex items-center gap-2 py-3 border-b border-gray-100">
                 @foreach (['tr', 'en', 'ar'] as $lang)
-                    <a href="{{ url($lang . '/' . ltrim(request()->path(), 'tr/en/ar/')) }}"
+                    <a href="{{ $alternateUrls[$lang] ?? url($lang) }}"
                         class="rounded px-2 py-1 text-xs font-medium transition-colors
                                {{ app()->getLocale() === $lang ? 'bg-accent text-white' : 'text-gray-500 hover:text-gray-900' }}">
                         {{ strtoupper($lang) }}
