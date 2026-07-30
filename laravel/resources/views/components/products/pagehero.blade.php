@@ -4,7 +4,7 @@
     'breadcrumbs' => [], // [['label' => 'Ürünlerimiz', 'url' => route('products.index')], ...]
 ])
 
-<div class="relative overflow-hidden border-b border-border bg-primary text-primary-foreground">
+<div class="mt-22 relative overflow-hidden border-b border-border bg-primary text-primary-foreground">
     <div class="pointer-events-none absolute inset-0 opacity-10 [background-image:radial-gradient(circle_at_1px_1px,var(--color-accent)_1px,transparent_0)] [background-size:24px_24px]"></div>
     <div class="pointer-events-none absolute -right-16 -top-24 size-72 rounded-full bg-accent/10 blur-2xl"></div>
 
@@ -12,7 +12,7 @@
         <nav aria-label="Breadcrumb">
             <ol class="flex flex-wrap items-center gap-1.5 text-sm text-primary-foreground/70">
                 <li>
-                    <a href="{{ route('home', app()->getLocale()) }}" class="flex items-center gap-1 transition-colors hover:text-accent">
+                    <a href="{{ localizedRoute('home') }}" class="flex items-center gap-1 transition-colors hover:text-accent">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-3.5">
                             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                             <path d="M9 22V12h6v10" />
