@@ -12,8 +12,7 @@
 
 @section('content')
     <div class="">
-        <form method="POST"
-            enctype="multipart/form-data"
+        <form method="POST" enctype="multipart/form-data"
             action="{{ isset($product) ? route('admin.products.update', $product->id) : route('admin.products.store') }}">
             @csrf
             @if (isset($product))
@@ -86,14 +85,35 @@
                 <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
                     <div>
                         <label class="block text-xs font-medium text-gray-700 mb-1">İşaret</label>
+
+                        @php
+                            // 1. Badge verisini veritabanından al
+                            $savedBadge = $product->badge ?? '';
+                            $badgeValue = '';
+
+                            // 2. Verinin tipine göre (Array, JSON String veya doğrudan String) "popular" değerini çıkar
+                            if (is_array($savedBadge)) {
+                                // Modelde $casts = ['badge' => 'json'] tanımlanmışsa
+                                $badgeValue = $savedBadge[app()->getLocale()] ?? ($savedBadge['tr'] ?? '');
+                            } elseif (is_string($savedBadge) && is_array(json_decode($savedBadge, true))) {
+                                // Ham JSON string olarak geliyorsa
+                                $badgeValue =
+                                    json_decode($savedBadge, true)[app()->getLocale()] ??
+                                    (json_decode($savedBadge, true)['tr'] ?? '');
+                            } else {
+                                // Spatie Translatable paketi veya doğrudan string dönebilen başka bir paket kullanılıyorsa
+                                $badgeValue = $savedBadge;
+                            }
+                        @endphp
+
                         <select name="badge"
                             class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white"
                             required>
                             <option value="">İşaret Seçin</option>
-                            @foreach ($badges as $badge)
-                                <option value="{{ $badge['value'] }}"
-                                    {{ old('badge', isset($badge) ? $badge['title'] : '') == $badge['title'] ? 'selected' : '' }}>
-                                    {{ $badge['title'] }} {{-- Eğer kategori modelinde çeviri yoksa sadece $categoryOption->name kullanabilirsiniz --}}
+                            @foreach ($badges as $item)
+                                <option value="{{ $item['value'] }}"
+                                    {{ old('badge', $badgeValue) == $item['value'] ? 'selected' : '' }}>
+                                    {{ $item['title'] }}
                                 </option>
                             @endforeach
                         </select>
@@ -125,7 +145,7 @@
                                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">
                             </div>
                             <div class="w-28">
-                                <input type="number" step="0.01" :name="'roasted_kg[]'" x-model="item.kg"
+                                <input type="text" step="0.01" :name="'roasted_kg[]'" x-model="item.kg"
                                     placeholder="Kg"
                                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">
                             </div>
@@ -141,28 +161,50 @@
                 </div>
 
                 <!-- Enerji Özellikleri -->
-                <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Enerji Tüketimi — Dizel (lt/saat)</label>
-                    <div class="grid grid-cols-3 gap-4">
+                <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Enerji Tüketimi</label>
+
+                    @php
+                        $fuelTypes = [
+                            'diesel' => 'Dizel (lt/saat)',
+                            'naturalgas' => 'Doğal Gaz (m³/saat)',
+                            'electric' => 'Elektrik (kWh)',
+                            'lpg' => 'LPG (kg/saat)',
+                        ];
+                    @endphp
+
+                    @foreach ($fuelTypes as $key => $label)
                         <div>
-                            <label class="block text-xs text-gray-500 mb-1">Min</label>
-                            <input type="number" step="0.01" name="diesel_min"
-                                value="{{ old('diesel_min', isset($product) ? $product->energy_specs['diesel']['min'] ?? '' : '') }}"
-                                class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">
+                            <p class="text-xs font-medium text-gray-600 mb-2">{{ $label }}</p>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-1">Min</label>
+                                    <input type="text" step="0.01" name="{{ $key }}_min"
+                                        value="{{ old($key . '_min', isset($product) ? $product->energy_specs[$key]['min'] ?? '' : '') }}"
+                                        class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-1">Max</label>
+                                    <input type="text" step="0.01" name="{{ $key }}_max"
+                                        value="{{ old($key . '_max', isset($product) ? $product->energy_specs[$key]['max'] ?? '' : '') }}"
+                                        class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-1">Ortalama</label>
+                                    <div class="relative">
+                                        <input type="text" step="0.01" name="{{ $key }}_avg"
+                                            value="{{ old($key . '_avg', isset($product) ? $product->energy_specs[$key]['avg'] ?? '' : '') }}"
+                                            class="w-full border border-gray-200 rounded-lg pl-3 pr-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">
+
+                                        <!-- Sağ taraftaki 'kg' ibaresi -->
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                            <span class="text-gray-500 text-sm">kg</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-xs text-gray-500 mb-1">Max</label>
-                            <input type="number" step="0.01" name="diesel_max"
-                                value="{{ old('diesel_max', isset($product) ? $product->energy_specs['diesel']['max'] ?? '' : '') }}"
-                                class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-gray-500 mb-1">Ortalama</label>
-                            <input type="number" step="0.01" name="diesel_avg"
-                                value="{{ old('diesel_avg', isset($product) ? $product->energy_specs['diesel']['avg'] ?? '' : '') }}"
-                                class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
 
                 <!-- Kapasite Alanları -->
@@ -186,26 +228,25 @@
                         class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">
                 </div>
 
-                <!-- Güç Alanları -->
+                <!-- Ölçü Alanları -->
                 <div class="grid grid-cols-3 gap-4">
                     <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">Güç (TR)</label>
-                        <input type="text" name="power_tr" placeholder="Örn: 15 kW"
-                            value="{{ old('power_tr', isset($product) ? $product->getTranslation('power', 'tr') : '') }}"
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Uzunluk</label>
+                        <input type="text" name="length" placeholder="Örn: 2000 mm"
+                            value="{{ old('l', isset($product) ? $product->length : '') }}"
                             class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">Güç (EN)</label>
-                        <input type="text" name="power_en" placeholder="e.g: 15 kW"
-                            value="{{ old('power_en', isset($product) ? $product->getTranslation('power', 'en') : '') }}"
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Genişlik</label>
+                        <input type="text" name="width" placeholder="Örn: 1080 mm"
+                            value="{{ old('width', isset($product) ? $product->width : '') }}"
                             class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">Güç (AR)</label>
-                        <input type="text" name="power_ar"
-                            value="{{ old('power_ar', isset($product) ? $product->getTranslation('power', 'ar') : '') }}"
-                            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
-                            dir="rtl">
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Yükseklik</label>
+                        <input type="text" name="height"
+                            value="{{ old('height', isset($product) ? $product->height : '') }}"
+                            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">
                     </div>
                 </div>
 

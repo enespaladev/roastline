@@ -35,6 +35,16 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // Boş string'leri null'a çevir (numeric validation hatası almamak için)
+        $fuelFields = [];
+        foreach (['diesel', 'naturalgas', 'electric', 'lpg'] as $fuel) {
+            foreach (['min', 'max', 'avg'] as $type) {
+                $field = "{$fuel}_{$type}";
+                $fuelFields[$field] = $request->input($field) !== '' ? $request->input($field) : null;
+            }
+        }
+        $request->merge($fuelFields);
+
         $request->validate([
             'name_tr' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
@@ -59,9 +69,25 @@ class ProductController extends Controller
             'roasted_name_ar' => 'nullable|array',
             'roasted_kg'      => 'nullable|array',
 
-            'diesel_min' => 'nullable|numeric',
-            'diesel_max' => 'nullable|numeric',
-            'diesel_avg' => 'nullable|numeric',
+            'diesel_min'     => 'nullable|numeric',
+            'diesel_max'     => 'nullable|numeric',
+            'diesel_avg'     => 'nullable|numeric',
+
+            'naturalgas_min' => 'nullable|numeric',
+            'naturalgas_max' => 'nullable|numeric',
+            'naturalgas_avg' => 'nullable|numeric',
+
+            'electric_min'   => 'nullable|numeric',
+            'electric_max'   => 'nullable|numeric',
+            'electric_avg'   => 'nullable|numeric',
+
+            'lpg_min'        => 'nullable|numeric',
+            'lpg_max'        => 'nullable|numeric',
+            'lpg_avg'        => 'nullable|numeric',
+
+            'length' => 'nullable|string',
+            'width'  => 'nullable|string',
+            'height' => 'nullable|string',
 
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
@@ -79,7 +105,6 @@ class ProductController extends Controller
         foreach ($namesTr as $index => $nameTr) {
             $kg = $kgs[$index] ?? null;
 
-            // tamamen boş satırı atla
             if (blank($nameTr) && blank($namesEn[$index] ?? null) && blank($kg)) {
                 continue;
             }
@@ -87,6 +112,16 @@ class ProductController extends Controller
             $roastedTr[] = ['name' => $nameTr, 'kg' => $kg];
             $roastedEn[] = ['name' => $namesEn[$index] ?? '', 'kg' => $kg];
             $roastedAr[] = ['name' => $namesAr[$index] ?? '', 'kg' => $kg];
+        }
+
+        // Enerji özellikleri — 4 yakıt tipi
+        $energySpecs = [];
+        foreach (['diesel', 'naturalgas', 'electric', 'lpg'] as $fuel) {
+            $energySpecs[$fuel] = [
+                'min' => $request->{$fuel . '_min'},
+                'max' => $request->{$fuel . '_max'},
+                'avg' => $request->{$fuel . '_avg'},
+            ];
         }
 
         $imagePath = null;
@@ -105,19 +140,16 @@ class ProductController extends Controller
 
             'roasted_products' => ['tr' => $roastedTr, 'en' => $roastedEn, 'ar' => $roastedAr],
 
-            'energy_specs' => [
-                'diesel' => [
-                    'min' => $request->diesel_min,
-                    'max' => $request->diesel_max,
-                    'avg' => $request->diesel_avg,
-                ],
-            ],
+            'energy_specs' => $energySpecs,
 
             'category_id' => $request->category_id,
             'slug' => Str::slug($request->name_en),
             'order' => $request->order ?? 0,
             'image' => $imagePath,
             'is_active' => $request->boolean('is_active', true),
+            'length' => $request->length,
+            'width'  => $request->width,
+            'height' => $request->height,
         ]);
 
         return redirect()->route('admin.products.index')->with('success', 'Ürün eklendi');
@@ -176,6 +208,15 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
+        $fuelFields = [];
+        foreach (['diesel', 'naturalgas', 'electric', 'lpg'] as $fuel) {
+            foreach (['min', 'max', 'avg'] as $type) {
+                $field = "{$fuel}_{$type}";
+                $fuelFields[$field] = $request->input($field) !== '' ? $request->input($field) : null;
+            }
+        }
+        $request->merge($fuelFields);
+
         $validated = $request->validate([
             'category_id'       => 'required|exists:categories,id',
             'name_tr'           => 'required|string|max:255',
@@ -198,9 +239,25 @@ class ProductController extends Controller
             'roasted_name_ar'   => 'nullable|array',
             'roasted_kg'        => 'nullable|array',
 
-            'diesel_min'        => 'nullable|numeric',
-            'diesel_max'        => 'nullable|numeric',
-            'diesel_avg'        => 'nullable|numeric',
+            'diesel_min'     => 'nullable|string|max:100',
+            'diesel_max'     => 'nullable|string|max:100',
+            'diesel_avg'     => 'nullable|string|max:100',
+
+            'naturalgas_min' => 'nullable|string|max:100',
+            'naturalgas_max' => 'nullable|string|max:100',
+            'naturalgas_avg' => 'nullable|string|max:100',
+
+            'electric_min'   => 'nullable|string|max:100',
+            'electric_max'   => 'nullable|string|max:100',
+            'electric_avg'   => 'nullable|string|max:100',
+
+            'lpg_min'        => 'nullable|string|max:100',
+            'lpg_max'        => 'nullable|string|max:100',
+            'lpg_avg'        => 'nullable|string|max:100',
+
+            'length' => 'nullable|string|max:100',
+            'width'  => 'nullable|string|max:100',
+            'height' => 'nullable|string|max:100',
 
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
@@ -256,14 +313,16 @@ class ProductController extends Controller
         $product->setTranslation('roasted_products', 'en', $roastedEn);
         $product->setTranslation('roasted_products', 'ar', $roastedAr);
 
-        // Enerji özellikleri
-        $product->energy_specs = [
-            'diesel' => [
-                'min' => $validated['diesel_min'] ?? null,
-                'max' => $validated['diesel_max'] ?? null,
-                'avg' => $validated['diesel_avg'] ?? null,
-            ],
-        ];
+        // Enerji özellikleri — 4 yakıt tipi
+        $energySpecs = [];
+        foreach (['diesel', 'naturalgas', 'electric', 'lpg'] as $fuel) {
+            $energySpecs[$fuel] = [
+                'min' => $validated["{$fuel}_min"] ?? null,
+                'max' => $validated["{$fuel}_max"] ?? null,
+                'avg' => $validated["{$fuel}_avg"] ?? null,
+            ];
+        }
+        $product->energy_specs = $energySpecs;
 
         if ($request->hasFile('image')) {
             // eski görseli sil (varsa)
@@ -272,6 +331,10 @@ class ProductController extends Controller
             }
             $product->image = $request->file('image')->store('products', 'public');
         }
+
+        $product->length = $validated['length'] ?? null;
+        $product->width  = $validated['width'] ?? null;
+        $product->height = $validated['height'] ?? null;
 
         $product->save();
 

@@ -11,7 +11,7 @@ class Category extends Model
 
     protected $fillable = ['name', 'description', 'slug', 'image', 'order', 'is_active'];
 
-    public $translatable = ['name', 'description'];
+    public $translatable = ['name', 'description', 'slug'];
 
     protected $casts = ['is_active' => 'boolean'];
 

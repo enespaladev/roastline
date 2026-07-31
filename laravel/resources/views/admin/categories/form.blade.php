@@ -3,7 +3,7 @@
 @section('title', isset($category) ? 'Kategori Duzenle' : 'Yeni Kategori')
 
 @section('content')
-<div class="max-w-2xl">
+<div class="">
     <form method="POST" action="{{ isset($category) ? route('admin.categories.update', $category) : route('admin.categories.store') }}">
         @csrf
         @if(isset($category)) @method('PUT') @endif
@@ -46,6 +46,27 @@
                     <label class="block text-xs font-medium text-gray-700 mb-1">Aciklama (AR)</label>
                     <textarea name="description_ar" rows="3"
                               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">{{ old('description_ar', isset($category) ? $category->getTranslation('description', 'ar') : '') }}</textarea>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Uzantı (TR) *</label>
+                    <input type="text" name="slug_tr"
+                           value="{{ old('slug_tr', isset($category) ? $category->getTranslation('slug', 'tr') : '') }}"
+                           class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Uzantı (EN) *</label>
+                    <input type="text" name="slug_en"
+                           value="{{ old('slug_en', isset($category) ? $category->getTranslation('slug', 'en') : '') }}"
+                           class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Uzantı (AR) *</label>
+                    <input type="text" name="slug_ar"
+                           value="{{ old('slug_ar', isset($category) ? $category->getTranslation('slug', 'ar') : '') }}"
+                           class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900" required>
                 </div>
             </div>
 
