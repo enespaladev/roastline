@@ -26,12 +26,19 @@ class CategoryController extends Controller
             'name_tr' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
             'name_ar' => 'required|string|max:255',
+            'slug_tr' => 'required|string|max:255',
+            'slug_en' => 'required|string|max:255',
+            'slug_ar' => 'required|string|max:255',
         ]);
 
         Category::create([
             'name' => ['tr' => $request->name_tr, 'en' => $request->name_en, 'ar' => $request->name_ar],
             'description' => ['tr' => $request->description_tr, 'en' => $request->description_en, 'ar' => $request->description_ar],
-            'slug' => Str::slug($request->name_en),
+            'slug' => [
+                'tr' => Str::slug($request->slug_tr),
+                'en' => Str::slug($request->slug_en),
+                'ar' => Str::slug($request->slug_ar),
+            ],
             'order' => $request->order ?? 0,
             'is_active' => $request->boolean('is_active', true),
         ]);
@@ -50,12 +57,19 @@ class CategoryController extends Controller
             'name_tr' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
             'name_ar' => 'required|string|max:255',
+            'slug_tr' => 'required|string|max:255',
+            'slug_en' => 'required|string|max:255',
+            'slug_ar' => 'required|string|max:255',
         ]);
 
         $category->update([
             'name' => ['tr' => $request->name_tr, 'en' => $request->name_en, 'ar' => $request->name_ar],
             'description' => ['tr' => $request->description_tr, 'en' => $request->description_en, 'ar' => $request->description_ar],
-            'slug' => Str::slug($request->name_en),
+            'slug' => [
+                'tr' => Str::slug($request->slug_tr),
+                'en' => Str::slug($request->slug_en),
+                'ar' => Str::slug($request->slug_ar),
+            ],
             'order' => $request->order ?? 0,
             'is_active' => $request->boolean('is_active', true),
         ]);

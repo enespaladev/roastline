@@ -26,4 +26,9 @@ return [
         'en' => 'contact',
         'ar' => 'اتصل-بنا',
     ],
+    'products_category' => [
+        'tr' => 'kategori',
+        'en' => 'category',
+        'ar' => 'فئة',
+    ],
 ];

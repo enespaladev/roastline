@@ -21,8 +21,10 @@ services:
     restart: unless-stopped
     environment:
       PMA_HOST: mysql
-      PMA_USER: roastline
-      PMA_PASSWORD: roastline123
+      # PMA_USER: roastline
+      # PMA_PASSWORD: roastline123
+      # PMA_ARBITRARY: 1
+      # PMA_AUTH_TYPE: cookie
     ports:
       - "8081:80"
     depends_on:

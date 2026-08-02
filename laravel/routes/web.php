@@ -24,7 +24,11 @@ foreach (['tr', 'en', 'ar'] as $locale) {
             Route::get('/' . $slugs['about'][$locale], [HomeController::class, 'about'])->name('about')->defaults('locale', $locale);
             Route::get('/' . $slugs['videos'][$locale], [HomeController::class, 'videos'])->name('videos')->defaults('locale', $locale);
 
+            // Route::get('/' . $slugs['products'][$locale], [SiteProductController::class, 'index'])->name('products.index')->defaults('locale', $locale);
+            // Route::get('/' . $slugs['products'][$locale] . '/{slug}', [SiteProductController::class, 'show'])->name('products.show')->defaults('locale', $locale);
+
             Route::get('/' . $slugs['products'][$locale], [SiteProductController::class, 'index'])->name('products.index')->defaults('locale', $locale);
+            Route::get('/' . $slugs['products'][$locale] . '/' . $slugs['products_category'][$locale] . '/{categorySlug}', [SiteProductController::class, 'index'])->name('products.category')->defaults('locale', $locale);
             Route::get('/' . $slugs['products'][$locale] . '/{slug}', [SiteProductController::class, 'show'])->name('products.show')->defaults('locale', $locale);
 
             Route::get('/' . $slugs['posts'][$locale], [SitePostController::class, 'index'])->name('posts.index')->defaults('locale', $locale);
