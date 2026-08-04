@@ -38,6 +38,10 @@
                     class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.posts*') ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }} transition">
                     <i class="fa fa-newspaper w-4"></i> Blog
                 </a>
+                <a href="{{ route('admin.videos.index') }}"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.posts*') ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }} transition">
+                    <i class="fa fa-video w-4"></i> Videolar
+                </a>
                 <a href="{{ route('admin.pages.index') }}"
                     class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm {{ request()->routeIs('admin.pages*') ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }} transition">
                     <i class="fa fa-file w-4"></i> Sayfalar

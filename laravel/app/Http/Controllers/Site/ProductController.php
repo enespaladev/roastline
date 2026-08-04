@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(Request $request, ?string $categorySlug = null)
+    public function index(Request $request)
     {
         $locale = $request->route('locale');
+        $categorySlug = $request->route('categorySlug'); // <-- kritik düzeltme
+
         app()->setLocale($locale);
 
         $categories = Category::where('is_active', true)
@@ -19,12 +21,16 @@ class ProductController extends Controller
             ->orderBy('order')
             ->get();
 
-        $activeCategory = $categorySlug
-            ? $categories->first(fn($cat) => $cat->slug === $categorySlug)
-            : $categories->first();
-            
-            
-        // dd($activeCategory);
+        abort_unless($categories->isNotEmpty(), 404);
+
+        if (!$categorySlug) {
+            $firstCategory = $categories->first();
+            return redirect()->route("{$locale}.products.category", [
+                'categorySlug' => $firstCategory->slug,
+            ]);
+        }
+
+        $activeCategory = $categories->first(fn($cat) => $cat->slug === $categorySlug);
 
         abort_unless($activeCategory, 404);
 
@@ -45,9 +51,7 @@ class ProductController extends Controller
 
         $categories = $categories->map(function ($cat) use ($activeCategory, $locale, $firstCategoryId) {
             $cat->active = $cat->id === $activeCategory->id;
-            $cat->url = $cat->id === $firstCategoryId
-                ? route("{$locale}.products.index")
-                : route("{$locale}.products.category", ['categorySlug' => $cat->slug]);
+            $cat->url = route("{$locale}.products.category", ['categorySlug' => $cat->slug]);
             $cat->count = $cat->products_count;
             return $cat;
         });
@@ -55,9 +59,11 @@ class ProductController extends Controller
         return view('site.products.index', compact('categories', 'products', 'sort', 'locale', 'activeCategory'));
     }
 
-    public function show(Request $request, string $slug)
+    public function show(Request $request)
     {
         $locale = $request->route('locale');
+        $slug = $request->route('slug');
+
         app()->setLocale($locale);
 
         $product = Product::where('slug', $slug)->where('is_active', true)->firstOrFail();

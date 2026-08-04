@@ -1,5 +1,12 @@
 <x-layout.app title="Products | Roastline Nuts Machines">
-    <x-products.pagehero :title="__('common.products')" :description="__('common.products_description')" :breadcrumbs="[['label' => __('common.products')]]" />
+    <x-products.pagehero
+        :title="$activeCategory->name"
+        :description="$activeCategory->description"
+        :breadcrumbs="[
+            ['label' => __('common.products'), 'url' => route(app()->getLocale() . '.products.index')],
+            ['label' => $activeCategory->name],
+        ]"
+    />
     <main class="mx-auto max-w-7xl px-6 py-10 lg:py-14">
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-[320px_1fr] lg:gap-10">
             <x-products.category-sidebar :categories="$categories" />

@@ -2,5 +2,4 @@
 return [
     'home'       => 'Anasayfa',
     'products'   => 'Makineler',
-    'media'      => 'Medya',
 ];
