@@ -4,11 +4,11 @@
     'breadcrumbs' => [], // [['label' => 'Ürünlerimiz', 'url' => route('products.index')], ...]
 ])
 
-<div class="mt-22 relative overflow-hidden border-b border-border bg-primary text-primary-foreground">
-    <div class="pointer-events-none absolute inset-0 opacity-10 [background-image:radial-gradient(circle_at_1px_1px,var(--color-accent)_1px,transparent_0)] [background-size:24px_24px]"></div>
+<div class="relative overflow-hidden border-b border-border bg-brand text-brand-foreground mt-20">
+    <div class="pointer-events-none absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0); background-size: 28px 28px;"></div>
     <div class="pointer-events-none absolute -right-16 -top-24 size-72 rounded-full bg-accent/10 blur-2xl"></div>
 
-    <div class="relative mx-auto flex max-w-7xl flex-col gap-4 px-6 py-10 sm:py-14">
+    <div class="relative mx-auto flex max-w-7xl flex-col gap-6 px-6 py-16 sm:py-14">
         <nav aria-label="Breadcrumb">
             <ol class="flex flex-wrap items-center gap-1.5 text-sm text-primary-foreground/70">
                 <li>

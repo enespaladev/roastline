@@ -7,11 +7,9 @@
 
 <section class="relative overflow-hidden bg-brand text-brand-foreground mt-20">
     {{-- subtle decorative grid --}}
-    <div
-        aria-hidden="true"
-        class="pointer-events-none absolute inset-0 opacity-10"
-        style="background-image: radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0); background-size: 28px 28px;"
-    ></div>
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 opacity-10"
+        style="background-image: radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0); background-size: 28px 28px;">
+    </div>
 
     <div class="relative mx-auto flex max-w-7xl flex-col gap-6 px-6 py-16 md:flex-row md:items-end md:justify-between md:py-20">
         <div>

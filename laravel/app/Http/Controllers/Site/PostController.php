@@ -11,6 +11,7 @@ class PostController extends Controller
     {
         app()->setLocale($locale);
         $posts = Post::where('is_active', true)->orderByDesc('published_at')->paginate(12);
+        // dd($posts);
         return view('site.posts.index', compact('posts', 'locale'));
     }
 

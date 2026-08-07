@@ -37,8 +37,9 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 24 }, { pa
         <nav class="hidden items-center gap-7 lg:flex">
             @foreach ($navItems as $item)
                 <a href="{{ $item['href'] }}"
-                    :class="scrolled ? 'text-foreground/80 hover:text-accent' : 'text-foreground/80 hover:text-orange-300'"
-                    class="text-sm font-medium transition-colors">
+                    :class="scrolled ? 'hover:bg-secondary hover:text-primary' : 'hover:bg-secondary hover:text-primary'"
+                    {{-- class="text-sm font-medium transition-colors"> --}}
+                    class="flex items-center gap-1 rounded-lg px-2 py-2 text-sm font-semibold text-foreground/80 transition-colors ">
                     {{ $item['label'] }}
                 </a>
             @endforeach
@@ -111,7 +112,7 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 24 }, { pa
             </a>
 
             {{-- Mobile Toggle --}}
-            <button type="button" x-on:click="open = !open" :class="scrolled ? 'text-gray-900' : 'text-white'"
+            <button type="button" x-on:click="open = !open" class="text-gray-900"
                 class="inline-flex size-10 items-center justify-center rounded-md lg:hidden"
                 aria-label="Menüyü aç/kapat">
                 <svg x-show="!open" class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,7 +139,7 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 24 }, { pa
             @endforeach
 
             {{-- Mobile Dil Seçici --}}
-            <div class="flex items-center gap-2 py-3 border-b border-gray-100">
+            {{-- <div class="flex items-center gap-2 py-3 border-b border-gray-100">
                 @foreach (['tr', 'en', 'ar'] as $lang)
                     <a href="{{ $alternateUrls[$lang] ?? url($lang) }}"
                         class="rounded px-2 py-1 text-xs font-medium transition-colors
@@ -146,7 +147,7 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 24 }, { pa
                         {{ strtoupper($lang) }}
                     </a>
                 @endforeach
-            </div>
+            </div> --}}
 
 
             <a href="tel:+905525553550"
@@ -162,7 +163,7 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 24 }, { pa
         {{-- Mobile Dil Seçici --}}
         <div class="relative border-b border-gray-100 py-3" x-data="{ langOpen: false }"
             @click.outside="langOpen = false">
-            <button type="button" x-on:click="langOpen = !langOpen"
+            {{-- <button type="button" x-on:click="langOpen = !langOpen"
                 class="flex w-full items-center justify-between text-sm font-medium text-gray-700">
                 <span class="inline-flex items-center">
                     <span class="fi fis {{ $currentLang['flag'] }} flag-icon-circle mr-2"></span>
@@ -174,7 +175,7 @@ window.addEventListener('scroll', () => { scrolled = window.scrollY > 24 }, { pa
                         d="M10.293 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 12.586l3.293-3.293a1 1 0 011.414 1.414l-4 4z"
                         clip-rule="evenodd"></path>
                 </svg>
-            </button>
+            </button> --}}
 
             <div x-show="langOpen" x-transition:enter="transition ease-out duration-150"
                 x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0"
