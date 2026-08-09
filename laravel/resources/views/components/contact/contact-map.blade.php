@@ -6,10 +6,9 @@
 <section id="harita" class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 md:pb-24 lg:px-8">
     <div class="relative overflow-hidden rounded-3xl border border-border shadow-sm">
         <iframe title="{{ __('contact.map_title') }}"
-            src="https://www.google.com/maps?q={{ urlencode($mapQuery) }}&output=embed"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3500.00354071069762!2d29.096623716164437!3d37.81214201731821!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14c715432d02bd5b%3A0xc85acb3690684e5d!2zUk9BU1RMxLBORSBLVVJVWUVNxLDFniBNQUvEsE5BTEFSSSBTQU4uIFZFIFTEsEMuIExURC7FnlTEsA!5e0!3m2!1str!2str!4v1786279001601!5m2!1str!2str"
             class="h-[380px] w-full grayscale-[0.15] md:h-[460px]" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         {{-- Floating location card --}}
         <div
             class="pointer-events-none absolute inset-x-0 bottom-0 p-4 sm:inset-auto sm:bottom-6 sm:left-6 sm:max-w-sm sm:p-0">
@@ -47,17 +46,15 @@
                     </div>
                 </div>
 
-                <a href="https://www.google.com/maps/dir/?api=1&destination={{ urlencode($mapQuery) }}"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-                >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                    <polygon points="3 11 22 2 13 21 11 13 3 11" />
-                </svg>
-                {{ __('contact.directions') }}
+                <a href="https://www.google.com/maps?cid=14437074990700973661" target="_blank" rel="noopener noreferrer"
+                    class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                        <polygon points="3 11 22 2 13 21 11 13 3 11" />
+                    </svg>
+                    {{ __('contact.directions') }}
                 </a>
+
             </div>
         </div>
     </div>
