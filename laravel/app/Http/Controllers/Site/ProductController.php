@@ -66,7 +66,10 @@ class ProductController extends Controller
 
         app()->setLocale($locale);
 
-        $product = Product::where('slug', $slug)->where('is_active', true)->firstOrFail();
+        // $product = Product::where('slug', $slug)->where('is_active', true)->firstOrFail();
+        $product = Product::where("slug->{$locale}", $slug)->where('is_active', true)->firstOrFail();
+
+        // dd($product);
 
         return view('site.products.show', compact('product', 'locale'));
     }

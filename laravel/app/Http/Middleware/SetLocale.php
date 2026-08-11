@@ -29,16 +29,40 @@ class SetLocale
         }
 
         $routeName = preg_replace('/^(tr|en|ar)\./', '', $route->getName());
-
-        if (in_array($routeName, ['products.show', 'posts.show'])) {
-            return;
-        }
-
         $params = $route->parameters();
 
         $alternateUrls = [];
-        foreach (['tr', 'en', 'ar'] as $locale) {
-            $alternateUrls[$locale] = RouteTranslator::urlFor($routeName, $locale, $params);
+
+        if ($routeName === 'products.show') {
+            $product = \App\Models\Product::where('slug', $params['slug'] ?? null)
+                ->where('is_active', true)
+                ->first();
+
+            if (!$product) {
+                return;
+            }
+
+            foreach (['tr', 'en', 'ar'] as $locale) {
+                $prefix = RouteTranslator::slug('products', $locale);
+                $alternateUrls[$locale] = url($locale . '/' . $prefix . '/' . $product->getTranslation('slug', $locale));
+            }
+        } elseif ($routeName === 'posts.show') {
+            $post = \App\Models\Post::where('slug', $params['slug'] ?? null)
+                ->where('is_active', true)
+                ->first();
+
+            if (!$post) {
+                return;
+            }
+
+            foreach (['tr', 'en', 'ar'] as $locale) {
+                $prefix = RouteTranslator::slug('posts', $locale);
+                $alternateUrls[$locale] = url($locale . '/' . $prefix . '/' . $post->getTranslation('slug', $locale));
+            }
+        } else {
+            foreach (['tr', 'en', 'ar'] as $locale) {
+                $alternateUrls[$locale] = RouteTranslator::urlFor($routeName, $locale, $params);
+            }
         }
 
         view()->share('alternateUrls', $alternateUrls);

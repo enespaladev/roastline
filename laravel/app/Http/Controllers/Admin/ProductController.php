@@ -143,7 +143,11 @@ class ProductController extends Controller
             'energy_specs' => $energySpecs,
 
             'category_id' => $request->category_id,
-            'slug' => Str::slug($request->name_en),
+            'slug' => [
+                'tr' => Str::slug($request->name_tr),
+                'en' => Str::slug($request->name_en),
+                'ar' => Str::slug($request->name_ar),
+            ],
             'order' => $request->order ?? 0,
             'image' => $imagePath,
             'is_active' => $request->boolean('is_active', true),
@@ -280,6 +284,11 @@ class ProductController extends Controller
         $product->setTranslation('power', 'tr', $validated['power_tr'] ?? '');
         $product->setTranslation('power', 'en', $validated['power_en'] ?? '');
         $product->setTranslation('power', 'ar', $validated['power_ar'] ?? '');
+
+        // SLUG — isim değiştiyse otomatik yeniden üret
+        $product->setTranslation('slug', 'tr', Str::slug($validated['name_tr']));
+        $product->setTranslation('slug', 'en', Str::slug($validated['name_en']));
+        $product->setTranslation('slug', 'ar', Str::slug($validated['name_ar']));
 
         // capacity formda tek input olarak geliyor (dil ayrımı yok görünüyor), TR'ye yazıyoruz
         $product->setTranslation('capacity', 'tr', $validated['capacity'] ?? '');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -15,10 +16,27 @@ class PostController extends Controller
         return view('site.posts.index', compact('posts', 'locale'));
     }
 
-    public function show(string $locale, string $slug)
+    // public function show(string $locale, string $slug)
+    // {
+    //     app()->setLocale($locale);
+
+    //     $post = Post::where("slug->{$locale}", $slug)
+    //         ->where('is_active', true)
+    //         ->firstOrFail();
+
+    //     return view('site.posts.show', compact('post', 'locale'));
+    // }
+
+    public function show(Request $request, string $slug)
     {
+        $locale = $request->route('locale');
+
         app()->setLocale($locale);
-        $post = Post::where('slug', $slug)->where('is_active', true)->firstOrFail();
+
+        $post = Post::where("slug->{$locale}", $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
         return view('site.posts.show', compact('post', 'locale'));
     }
 }

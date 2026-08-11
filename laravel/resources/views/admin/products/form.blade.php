@@ -81,6 +81,31 @@
                     </div>
                 </div>
 
+                <!-- Url Alanları -->
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Slug (TR)</label>
+                        <input name="slug_tr" rows="3"
+                            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+                            value="{{ old('slug_tr', isset($product) ? $product->getTranslation('slug', 'tr') : '') }}"
+                        >
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Slug (EN)</label>
+                        <input name="slug_en" rows="3"
+                            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+                            value="{{ old('slug_en', isset($product) ? $product->getTranslation('slug', 'en') : '') }}"
+                        >
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Slug (AR)</label>
+                        <input name="slug_ar" rows="3"
+                        class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+                        value="{{ old('slug_ar', isset($product) ? $product->getTranslation('slug', 'ar') : '') }}"
+                    >
+                    </div>
+                </div>
+
                 <!-- Rozet (Badge) -->
                 <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
                     <div>
