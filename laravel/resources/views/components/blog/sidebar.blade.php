@@ -25,14 +25,14 @@
 <aside class="flex flex-col gap-6 lg:sticky lg:top-28">
     {{-- Popular posts --}}
     <section class="rounded-2xl border border-border bg-card p-6">
-        <h2 class="font-serif text-xl font-semibold text-foreground">{{ __('blog.popular_posts') }}</h2>
+        <h2 class="font-serif text-xl font-semibold text-foreground">{{ __('posts.popular_posts') }}</h2>
         <div class="mt-2 h-0.5 w-10 rounded-full bg-gold"></div>
 
         <ul class="mt-5 flex flex-col">
             @forelse ($popularPosts as $index => $popularPost)
                 <li>
                     <a
-                        href="{{ lroute('posts.show', $popularPost->slug) }}"
+                        href="{{ localizedRoute('posts.show', ['slug' => $popularPost->slug]) }}"
                         class="group flex items-start gap-4 border-b border-border py-4 last:border-0 last:pb-0"
                     >
                         <span class="font-serif text-2xl font-bold leading-none text-brand/25 transition-colors group-hover:text-gold">
@@ -45,7 +45,7 @@
                     </a>
                 </li>
             @empty
-                <li class="py-4 text-sm text-muted-foreground">{{ __('blog.no_popular_posts') }}</li>
+                <li class="py-4 text-sm text-muted-foreground">{{ __('posts.no_popular_posts') }}</li>
             @endforelse
         </ul>
     </section>
@@ -53,35 +53,35 @@
     {{-- Labels --}}
     <section class="rounded-2xl border border-border bg-card p-6">
         <h2 class="flex items-center gap-2 font-serif text-xl font-semibold text-foreground">
-            <x-icon name="tag" class="h-4 w-4 text-brand" /> {{ __('blog.labels') }}
+            <x-icon name="tag" class="h-4 w-4 text-brand" /> {{ __('posts.labels') }}
         </h2>
         <div class="mt-2 h-0.5 w-10 rounded-full bg-gold"></div>
 
         <div class="mt-5 flex flex-wrap gap-2">
             @forelse ($labels as $label)
                 <a
-                    href="{{ lroute('posts.byLabel', $label->slug) }}"
+                    href="{{ localizedRoute('posts.byLabel', ['slug' => $label->slug]) }}"
                     class="rounded-full border border-border bg-secondary px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-brand hover:bg-brand hover:text-brand-foreground"
                 >
                     {{ $label->name }}
                 </a>
             @empty
-                <span class="text-sm text-muted-foreground">{{ __('blog.no_labels') }}</span>
+                <span class="text-sm text-muted-foreground">{{ __('posts.no_labels') }}</span>
             @endforelse
         </div>
     </section>
 
     {{-- CTA card --}}
     <section class="overflow-hidden rounded-2xl bg-brand p-6 text-brand-foreground">
-        <h2 class="font-serif text-xl font-semibold">{{ __('blog.cta_title') }}</h2>
+        <h2 class="font-serif text-xl font-semibold">{{ __('posts.cta_title') }}</h2>
         <p class="mt-2 text-sm leading-relaxed text-brand-foreground/80">
-            {{ __('blog.cta_description') }}
+            {{ __('posts.cta_description') }}
         </p>
         <a
-            href="{{ lroute('products.index') }}"
+            href="{{ localizedRoute('products.index') }}"
             class="mt-4 inline-flex items-center gap-2 rounded-full bg-gold px-4 py-2 text-sm font-semibold text-gold-foreground transition-transform hover:-translate-y-0.5"
         >
-            {{ __('blog.cta_button') }} <x-icon name="arrow-up-right" class="h-4 w-4" />
+            {{ __('posts.cta_button') }} <x-icon name="arrow-up-right" class="h-4 w-4" />
         </a>
     </section>
 </aside>

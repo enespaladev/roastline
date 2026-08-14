@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Translatable\HasTranslations;
 
 class Post extends Model
@@ -10,8 +11,15 @@ class Post extends Model
     use HasTranslations;
 
     protected $fillable = [
-        'title', 'content', 'meta_title', 'meta_description', 'badge',
-        'slug', 'image', 'is_active', 'published_at'
+        'title',
+        'content',
+        'meta_title',
+        'meta_description',
+        'badge',
+        'slug',
+        'image',
+        'is_active',
+        'published_at'
     ];
 
     public $translatable = ['title', 'content', 'slug', 'badge', 'meta_title', 'meta_description'];
@@ -20,4 +28,9 @@ class Post extends Model
         'is_active' => 'boolean',
         'published_at' => 'datetime',
     ];
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

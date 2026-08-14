@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -37,6 +38,16 @@ class PostController extends Controller
             ->where('is_active', true)
             ->firstOrFail();
 
-        return view('site.posts.show', compact('post', 'locale'));
+        $popularPosts = Post::query()
+            ->where('id', '!=', $post->id)
+            ->where('is_active', true)
+            ->latest()
+            ->limit(5)
+            ->get();
+
+        $labels = Tag::query()->latest()->limit(15)->get();
+
+
+        return view('site.posts.show', compact('post', 'locale', 'popularPosts', 'labels'));
     }
 }

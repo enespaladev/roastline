@@ -2629,3 +2629,11 @@
 .text-gold {
     color: var(--gold);
 }
+
+
+@supports (color: color-mix(in lab, red, red)) {
+    .bg-secondary\/60 {
+        background-color:
+color-mix(in oklab, var(--secondary) 60%, transparent);
+    }
+}

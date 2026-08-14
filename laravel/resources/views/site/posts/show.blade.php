@@ -1,8 +1,8 @@
-<div class="flex min-h-screen flex-col">
+<div class="flex min-h-screen flex-col" style="background-color: lab(98.2976% -.19002 2.27954)">
     <x-layout.app title="Post Detail | Roastline Nuts Machines">
         <main class="flex-1">
             {{-- Breadcrumb --}}
-            <div class="border-b border-border bg-secondary/60">
+            <div class="border-b border-border mt-22" style="background-color: color-mix(in oklab, lab(94.2739% -.358552 4.57379) 60%, transparent)">
                 <div
                     class="mx-auto flex max-w-7xl flex-col gap-1 px-6 py-6 md:flex-row md:items-center md:justify-between">
                     <h1 class="font-serif text-lg font-medium text-foreground md:text-xl">

@@ -6,4 +6,5 @@ return [
     'highcapacity'   => 'Yüksek Kapasite',
     'home'   => 'Ana Sayfa',
     'ourproducts'   => 'Ürünlerimiz',
+    'popular_posts' => 'Popüler Yazılar',
 ];
